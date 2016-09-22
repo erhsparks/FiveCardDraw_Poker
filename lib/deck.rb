@@ -13,11 +13,11 @@ class Deck
   end
 
   def deal(num_cards)
-    @pack.pop(num_cards)
+    @pack.shift(num_cards)
   end
 
-  def discard(cards)
-    @pack = cards + @pack 
+  def discard(*cards)
+    @pack += cards 
   end
 
   private
