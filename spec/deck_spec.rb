@@ -1,5 +1,5 @@
-require 'deck'
 require 'rspec'
+require 'deck'
 
 describe Deck do
   subject(:deck) { Deck.new }
@@ -22,7 +22,7 @@ describe Deck do
   describe "#shuffle" do
     before(:each) do
       @pack1 = deck.pack
-      
+
       deck.shuffle
       @pack2 = deck.pack
     end

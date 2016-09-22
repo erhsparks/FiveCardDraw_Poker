@@ -10,4 +10,5 @@ class Game
     @deck = Deck.new
   end
 
+  ### etc
 end
