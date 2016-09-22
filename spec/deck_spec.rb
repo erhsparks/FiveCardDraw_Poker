@@ -1,6 +1,5 @@
 require 'deck'
 require 'rspec'
-require 'byebug'
 
 describe Deck do
   subject(:deck) { Deck.new }
@@ -23,6 +22,7 @@ describe Deck do
   describe "#shuffle" do
     before(:each) do
       @pack1 = deck.pack
+      
       deck.shuffle
       @pack2 = deck.pack
     end
@@ -54,6 +54,7 @@ describe Deck do
 
     before(:each) do
       @before_pack = deck.pack
+
       deck.discard(new_card)
       @after_pack = deck.pack
     end
