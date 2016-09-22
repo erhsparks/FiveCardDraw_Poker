@@ -13,13 +13,22 @@ class Hand
 
   def add_cards(*new_cards)
     raise "your hand is already full!" if @cards.length == 5
-    new_cards.each { |card| @cards << card }
+
+    new_cards.each do |card|
+      if @cards.length < 5
+        @cards << card
+      else
+        raise "cannot add any more cards; hand is full!"
+      end
+    end
+
     hand_contents
   end
 
   def discard(*bye_cards)
     bye_cards.each do |card|
       raise "card not found!" unless @cards.include?(card)
+
       @cards.delete(card)
     end
   end

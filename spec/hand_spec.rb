@@ -25,9 +25,40 @@ describe Hand do
   end
 
   describe "#add_cards" do
-    it "adds one card to hand"
+    it "adds a card to an empty hand" do
+      hand.add_cards(@card3)
+      new_hand = hand.cards
 
-    it "adds multiple cards to hand"
+      expect(new_hand.size).to eq(1)
+      expect(new_hand).to include(@card3)
+    end
+
+    it "adds a card to a hand with cards in it" do
+      hand.add_cards(@card1)
+      hand.add_cards(@card2)
+      new_hand = hand.cards
+
+      expect(new_hand.size).to eq(2)
+      expect(new_hand).to include(@card1)
+      expect(new_hand).to include(@card2)
+    end
+
+    it "adds multiple cards to a hand" do
+      hand.add_cards(@card1, @card2, @card5)
+      new_hand = hand.cards
+
+      expect(new_hand.size).to eq(3)
+      expect(new_hand).to include(@card1)
+      expect(new_hand).to include(@card2)
+      expect(new_hand).to include(@card5)
+    end
+
+    it "does not allow hand to be greater than five cards" do
+      hand.add_cards(@card1, @card2, @card3, @card4, @card5)
+      card6 = double("card6", :suit => :♠, :value => :"9")
+
+      expect { hand.add_cards(card6) }.to raise_error
+    end
   end
 
   describe "#discard" do
@@ -35,25 +66,33 @@ describe Hand do
       hand.add_cards(@card1, @card2, @card3, @card4, @card5)
     end
 
+    it "raises an error if input card is not in hand" do
+      expect { hand.delete(card6) }.to raise_error
+    end
+
     it "removes a specific card from hand" do
       hand.discard(@card2)
-      next_hand = hand.cards
+      new_hand = hand.cards
 
-      expect(next_hand).to_not include(@card2)
-      expect(next_hand.size).to eq(4)#be < (@before_hand.size)
+      expect(new_hand).to_not include(@card2)
+      expect(new_hand.size).to eq(4)
     end
 
     it "removes multiple cards from hand" do
       hand.discard(@card1, @card4)
-      final_hand = hand.cards
+      new_hand = hand.cards
 
-      expect(final_hand).to_not include(@card1)
-      expect(final_hand).to_not include(@card4)
-      expect(final_hand.size).to eq(3)#be < (@next_hand.size)
+      expect(new_hand).to_not include(@card1)
+      expect(new_hand).to_not include(@card4)
+      expect(new_hand.size).to eq(3)
     end
   end
 
   describe "#winning_hand" do
+    before(:each) do
+      hand.add_cards(@card1, @card2, @card3, @card4, @card5)
+    end
+    
     let(:possible_values) { Hand::ALPHABET }
 
     before(:each) do
