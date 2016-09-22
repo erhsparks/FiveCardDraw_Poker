@@ -1,5 +1,4 @@
 require_relative 'card'
-require 'byebug'
 
 class Hand
   attr_reader :cards, :contents
@@ -12,17 +11,17 @@ class Hand
     @cards[index]
   end
 
+  def add_cards(*new_cards)
+    raise "your hand is already full!" if @cards.length == 5
+    new_cards.each { |card| @cards << card }
+    hand_contents
+  end
+
   def discard(*bye_cards)
     bye_cards.each do |card|
       raise "card not found!" unless @cards.include?(card)
       @cards.delete(card)
     end
-  end
-
-  def add_cards(*new_cards)
-    raise "your hand is already full!" if @cards.length == 5
-    new_cards.each { |card| @cards << card }
-    hand_contents
   end
 
   def winning_hand
@@ -47,10 +46,11 @@ class Hand
     @contents = {}
 
     @cards.each do |card|
-      if @contents.keys.include?(card.value)
-        @contents[card.value] << card.suit
+      value, suit = card.value, card.suit
+      if @contents.keys.include?(value)
+        @contents[value] << suit
       else
-        @contents[card.value] = [card.suit]
+        @contents[value] = [suit]
       end
     end
 
@@ -72,6 +72,7 @@ class Hand
   def straight?
     if @contents.keys.length == 5
       sorted = @contents.keys.sort_by {|key| ALPHABET.index(key)}
+
       (0..ALPHABET.length-5).any? { |i| ALPHABET[i...i+5] == sorted }
     else
       false
@@ -95,8 +96,10 @@ class Hand
   end
 
   def royal_flush?
-    straight? && flush? && @contents.keys.all? {|key| ALPHABET.index(key) > 7}
+    straight? && flush? &&
+          @contents.keys.all? {|key| ALPHABET.index(key) > 7}
   end
 
+  # ALPHABET = Deck::VALUES
   ALPHABET = %i(2 3 4 5 6 7 8 9 10 J Q K A)
 end

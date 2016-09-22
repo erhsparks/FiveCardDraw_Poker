@@ -17,9 +17,12 @@ class Deck
   end
 
   def discard(*cards)
-    @pack += cards 
+    @pack += cards
   end
 
+  VALUES = %i(2 3 4 5 6 7 8 9 10 J Q K A)
+  SUITS = %i(♠ ♥ ♦ ♣)
+  
   private
   def make_pack
     SUITS.each do |suit|
@@ -30,7 +33,4 @@ class Deck
 
     shuffle
   end
-
-  VALUES = %i(2 3 4 5 6 7 8 9 10 J Q K A)
-  SUITS = %i(♠ ♥ ♦ ♣)
 end
